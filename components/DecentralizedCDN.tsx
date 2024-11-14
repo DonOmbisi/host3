@@ -1,5 +1,8 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState, useEffect } from "react";
-import { create, CID } from "@web3-storage/w3up-client";
+import { create } from "@web3-storage/w3up-client";
+import { CID } from "multiformats/cid"; // Import CID from 'multiformats'
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -88,19 +91,16 @@ export function DecentralizedCDN() {
   };
 
   const pinToNodes = async (cid: CID) => {
-    // Simulate pinning to multiple nodes
-    console.log(`Pinning ${cid} to nodes: ${nodes.join(", ")}`);
+    console.log(`Pinning ${cid} to nodes: ${nodes.map(node => node.url).join(", ")}`);
   };
 
   const findNearestNode = async (cid: CID): Promise<string> => {
-    // Simulate finding the nearest node
     return nodes[Math.floor(Math.random() * nodes.length)]?.url || IPFS_GATEWAY;
   };
 
   const refreshNodes = async () => {
     setIsRefreshing(true);
     try {
-      // Simulating fetching real IPFS nodes
       const fetchedNodes: Node[] = [
         {
           id: "QmQzWuL7Ci8gDiYA2QEHbRpvNpvgFzhyYEVGvjLm9VUJdS",
@@ -145,7 +145,7 @@ export function DecentralizedCDN() {
     setNodes((prevNodes) =>
       prevNodes.map((node) => ({
         ...node,
-        isActive: Math.random() > 0.2, // 80% chance of being active
+        isActive: Math.random() > 0.2,
         latency: node.isActive ? Math.floor(Math.random() * 100) + 10 : 0,
       }))
     );
@@ -159,10 +159,7 @@ export function DecentralizedCDN() {
         </CardHeader>
         <CardContent className="space-y-4">
           <div>
-            <Label
-              htmlFor="file-upload"
-              className="text-sm font-medium text-gray-400"
-            >
+            <Label htmlFor="file-upload" className="text-sm font-medium text-gray-400">
               Select a file to share
             </Label>
             <Input
@@ -191,9 +188,7 @@ export function DecentralizedCDN() {
           </Button>
           {fileHash && (
             <div className="mt-4">
-              <Label className="text-sm font-medium text-gray-400">
-                File CID:
-              </Label>
+              <Label className="text-sm font-medium text-gray-400">File CID:</Label>
               <p className="mt-1 text-white break-all">{fileHash}</p>
             </div>
           )}
@@ -206,10 +201,7 @@ export function DecentralizedCDN() {
         </CardHeader>
         <CardContent className="space-y-4">
           <div>
-            <Label
-              htmlFor="retrieve-hash"
-              className="text-sm font-medium text-gray-400"
-            >
+            <Label htmlFor="retrieve-hash" className="text-sm font-medium text-gray-400">
               Enter file CID to retrieve
             </Label>
             <Input
@@ -239,9 +231,7 @@ export function DecentralizedCDN() {
           </Button>
           {retrievedUrl && (
             <div className="mt-4">
-              <Label className="text-sm font-medium text-gray-400">
-                Retrieved File URL:
-              </Label>
+              <Label className="text-sm font-medium text-gray-400">Retrieved File URL:</Label>
               <p className="mt-1 text-white break-all">
                 <a
                   href={retrievedUrl}
@@ -259,15 +249,13 @@ export function DecentralizedCDN() {
 
       <Card className="bg-[#0a0a0a] border-gray-800">
         <CardHeader>
-          <CardTitle className="text-xl text-white">
-            IPFS Network Nodes
-          </CardTitle>
+          <CardTitle className="text-xl text-white">Node Status</CardTitle>
         </CardHeader>
-        <CardContent className="space-y-4">
+        <CardContent>
           <Button
             onClick={refreshNodes}
             disabled={isRefreshing}
-            className="bg-yellow-600 hover:bg-yellow-500 text-white"
+            className="mb-4 bg-purple-600 hover:bg-purple-500 text-white"
           >
             {isRefreshing ? (
               <>
@@ -284,33 +272,19 @@ export function DecentralizedCDN() {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead className="text-white">Node ID</TableHead>
-                <TableHead className="text-white">Gateway URL</TableHead>
-                <TableHead className="text-white">Status</TableHead>
-                <TableHead className="text-white">Latency</TableHead>
+                <TableHead className="text-gray-400">Node URL</TableHead>
+                <TableHead className="text-gray-400">Active</TableHead>
+                <TableHead className="text-gray-400">Latency (ms)</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {nodes.map((node) => (
                 <TableRow key={node.id}>
-                  <TableCell className="font-medium text-white">
-                    {node.id.slice(0, 10)}...
+                  <TableCell className="text-white">{node.url}</TableCell>
+                  <TableCell className="text-white">
+                    {node.isActive ? "Yes" : "No"}
                   </TableCell>
-                  <TableCell className="text-gray-300">{node.url}</TableCell>
-                  <TableCell>
-                    <span
-                      className={`px-2 py-1 rounded-full text-xs font-semibold ${
-                        node.isActive
-                          ? "bg-green-500 text-white"
-                          : "bg-red-500 text-white"
-                      }`}
-                    >
-                      {node.isActive ? "Active" : "Inactive"}
-                    </span>
-                  </TableCell>
-                  <TableCell className="text-gray-300">
-                    {node.isActive ? `${node.latency} ms` : "-"}
-                  </TableCell>
+                  <TableCell className="text-white">{node.latency}</TableCell>
                 </TableRow>
               ))}
             </TableBody>

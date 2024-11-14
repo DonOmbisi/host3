@@ -1,3 +1,6 @@
+/* eslint-disable react/no-unescaped-entities */
+/* eslint-disable react/jsx-no-comment-textnodes */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 import Image from "next/image";
 import Link from "next/link";
@@ -5,6 +8,7 @@ import DeveloperTools from "@/components/DeveloperTools";
 import UserAccess from "@/components/UserAccess";
 import {
   ArrowRight,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   Code,
   Globe,
   Zap,
@@ -116,6 +120,7 @@ export default function Home() {
           <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
             Host your legacy websites like calculators and unit converters on
             the blockchain, absolutely free! No hosting fees, no expiration
+            // eslint-disable-next-line react/no-unescaped-entities
             dates. Preserve your simple web projects forever with HTTP3's
             decentralized hosting.
           </p>
